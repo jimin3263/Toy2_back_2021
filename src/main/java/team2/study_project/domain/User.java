@@ -1,6 +1,7 @@
 package team2.study_project.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,13 @@ public class User extends BasicClass implements UserDetails  {
     @OneToMany(mappedBy = "user")
     private List<Follow> followList = new ArrayList<>();
 
+    @Builder
+    public User(String email, String password, String nickname){
+        this.email= email;
+        this.password=password;
+        this.nickname=nickname;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -70,4 +78,5 @@ public class User extends BasicClass implements UserDetails  {
     public boolean isEnabled() {
         return false;
     }
+
 }
