@@ -25,4 +25,19 @@ public class Study extends BasicClass {
     @Column
     private boolean status;
 
+    @Builder
+    public Study(String content, Boolean status, User user) {
+        this.user = user;
+        this.content = content;
+        this.status = status;
+    }
+
+    public void update(String content){
+        this.content= content;
+    }
+
+    public void statusUpdate(Boolean status){
+        this.status = status;
+    }
+
 }
