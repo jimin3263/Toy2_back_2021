@@ -16,7 +16,7 @@ import java.util.*;
 @Getter
 public class User extends BasicClass implements UserDetails  {
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue
     @Column(name="user_id")
     private Long id;
 
