@@ -21,14 +21,13 @@ public class User extends BasicClass implements UserDetails  {
     private Long id;
 
     @Email
-    @Column(name = "email")
-    private String username;
+    private String email;
 
     @Column
     private String password;
 
     @Column
-    private String nickname;
+    private String username;
 
     @OneToMany(mappedBy = "user")
     private List<Timer> timer = new ArrayList<>();
@@ -40,10 +39,10 @@ public class User extends BasicClass implements UserDetails  {
     private List<Follow> followList = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String nickname){
-        this.username= email;
+    public User(String email, String password, String username){
+        this.email= email;
         this.password=password;
-        this.nickname=nickname;
+        this.username=username;
     }
 
     @Override
@@ -60,17 +59,16 @@ public class User extends BasicClass implements UserDetails  {
         this.password = password;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setNickname(String nickname) {
-        this.username = nickname;
+        this.email = username;
     }
 
     @Override
@@ -99,9 +97,9 @@ public class User extends BasicClass implements UserDetails  {
         if(o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id.equals(user.id) &&
-                username.equals(user.username) &&
+                email.equals(user.email) &&
                 password.equals(user.password) &&
-                nickname.equals(user.nickname);
+                username.equals(user.username);
     }
 
 }

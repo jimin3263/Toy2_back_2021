@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team2.study_project.domain.User;
 import team2.study_project.repository.UserRepository;
 
+import java.util.Optional;
+
 @Transactional
 public class UserService {
 
@@ -15,34 +17,18 @@ public class UserService {
     }
 
     /**
-     * 회원가입
+     * 이메일 검증
      */
-    public void join(User user) {
+    public String validateEmail(User user) {
 
-        validateDuplicateMember(user); //중복 회원 검증
-        userRepository.save(user);
-    }
+        String email = user.getEmail();
 
-    private void validateDuplicateMember(User user) {
-
-
-        userRepository.findByUsername(user.getUsername())
-                .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
-                });
-    }
-
-   /* public boolean checkEmailDuplicate(String username) {
-        return userRepository.existsByEmail(username);
-    }*/
-
-    public String validateUsername(String username, User user) {
-        if(userRepository.findByUsername(username) != null)
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        if(byEmail.isPresent())
             return "failed";
 
         userRepository.save(user);
         return "success";
     }
-
 
 }
