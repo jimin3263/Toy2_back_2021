@@ -8,19 +8,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.*;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor //(access = AccessLevel.PROTECTED)
 @Getter
 public class User extends BasicClass implements UserDetails  {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="user_id")
     private Long id;
 
+    @Email
     @Column(name = "email")
-    private String email;
+    private String username;
 
     @Column
     private String password;
@@ -39,7 +41,7 @@ public class User extends BasicClass implements UserDetails  {
 
     @Builder
     public User(String email, String password, String nickname){
-        this.email= email;
+        this.username= email;
         this.password=password;
         this.nickname=nickname;
     }
@@ -51,12 +53,24 @@ public class User extends BasicClass implements UserDetails  {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setNickname(String nickname) {
+        this.username = nickname;
     }
 
     @Override
@@ -77,6 +91,17 @@ public class User extends BasicClass implements UserDetails  {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id) &&
+                username.equals(user.username) &&
+                password.equals(user.password) &&
+                nickname.equals(user.nickname);
     }
 
 }
