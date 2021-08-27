@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team2.study_project.domain.User;
-import team2.study_project.dto.UserDto;
+import team2.study_project.dto.user.UserDto;
 import team2.study_project.service.UserService;
 
 @Slf4j

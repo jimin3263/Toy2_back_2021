@@ -22,12 +22,12 @@ public class Follow extends BasicClass{
     private User user;
 
     @Column
-    private String followerId;
+    private Long followingId;
 
     @Builder
-    public Follow(User user , String followerId){
+    public Follow(User user , Long followingId){
         this.user=user;
-        this.followerId=followerId;
+        this.followingId=followingId;
     }
 
 }

@@ -102,4 +102,8 @@ public class User extends BasicClass implements UserDetails  {
                 username.equals(user.username);
     }
 
+    public void update(String username){
+        this.username= username;
+    }
+
 }
