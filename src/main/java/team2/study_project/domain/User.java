@@ -8,10 +8,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.*;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor //(access = AccessLevel.PROTECTED)
 @Getter
 public class User extends BasicClass implements UserDetails  {
 
@@ -19,14 +20,14 @@ public class User extends BasicClass implements UserDetails  {
     @Column(name="user_id")
     private Long id;
 
-    @Column(name = "email")
+    @Email
     private String email;
 
     @Column
     private String password;
 
     @Column
-    private String nickname;
+    private String username;
 
     @OneToMany(mappedBy = "user")
     private List<Timer> timer = new ArrayList<>();
@@ -38,10 +39,10 @@ public class User extends BasicClass implements UserDetails  {
     private List<Follow> followList = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String nickname){
+    public User(String email, String password, String username){
         this.email= email;
         this.password=password;
-        this.nickname=nickname;
+        this.username=username;
     }
 
     @Override
@@ -51,12 +52,23 @@ public class User extends BasicClass implements UserDetails  {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
-    @Override
-    public String getUsername() {
-        return null;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUsername(String username) {
+        this.email = username;
     }
 
     @Override
@@ -77,6 +89,21 @@ public class User extends BasicClass implements UserDetails  {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id) &&
+                email.equals(user.email) &&
+                password.equals(user.password) &&
+                username.equals(user.username);
+    }
+
+    public void update(String username){
+        this.username= username;
     }
 
 }

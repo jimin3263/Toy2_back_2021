@@ -30,7 +30,7 @@ class StudyRepositoryTest {
         User user = User.builder()
                 .password("dd")
                 .email("dd")
-                .nickname("zz")
+                .username("zz")
                 .build();
 
         userRepository.save(user);

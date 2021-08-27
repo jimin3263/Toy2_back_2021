@@ -1,17 +1,16 @@
-package team2.study_project.dto;
+package team2.study_project.dto.study;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Getter
 @NoArgsConstructor
-public class StudyUpdateRequestDto {
+public class StudyRequestDto {
     private String content;
 
     @Builder
-    public StudyUpdateRequestDto(String content) {
+    public StudyRequestDto(String content) {
         this.content = content;
     }
 }
