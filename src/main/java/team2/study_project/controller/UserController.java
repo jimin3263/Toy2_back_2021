@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import team2.study_project.domain.User;
 import team2.study_project.dto.user.UserDto;
 import team2.study_project.jwt.JwtTokenProvider;
+import team2.study_project.jwt.TokenDto;
 import team2.study_project.repository.UserRepository;
 import team2.study_project.service.UserService;
 
@@ -54,13 +55,19 @@ public class UserController {
 
     // 로그인
     @PostMapping("/user/signin")
-    public String login(@RequestBody Map<String, String> user) {
+    public TokenDto login(@RequestBody Map<String, String> user) {
         User member = userRepository.findByEmail(user.get("email"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
         if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+
+        String token = jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
+        TokenDto tokenDto = TokenDto.builder()
+                .token(token)
+                .build();
+
+        return tokenDto;
     }
 
 }
