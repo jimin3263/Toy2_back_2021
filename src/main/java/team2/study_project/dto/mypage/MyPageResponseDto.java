@@ -6,16 +6,16 @@ import lombok.Getter;
 @Getter
 public class MyPageResponseDto {
 
-    private String nickname;
+    private String username;
     private String email;
-    private int Follower;
-    private int Following;
+    private int follower;
+    private int following;
 
     @Builder
-    public MyPageResponseDto(String nickname, String email, int follower, int following) {
-        this.nickname = nickname;
+    public MyPageResponseDto(String username, String email, int follower, int following) {
+        this.username = username;
         this.email = email;
-        Follower = follower;
-        Following = following;
+        this.follower = follower;
+        this.following = following;
     }
 }

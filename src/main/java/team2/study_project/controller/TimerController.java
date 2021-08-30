@@ -5,33 +5,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team2.study_project.dto.ResponseMessage;
-import team2.study_project.dto.mypage.MyPageRequestDto;
-import team2.study_project.dto.mypage.MyPageResponseDto;
-import team2.study_project.service.MyPageService;
+import team2.study_project.dto.timer.TimerRequestDto;
+import team2.study_project.service.TimerService;
 import team2.study_project.service.UserService;
 
 import java.util.Optional;
 
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/mypage")
-public class MyPageController {
+@RequestMapping("/timer")
+public class TimerController {
 
-    private final MyPageService myPageService;
+    private final TimerService timerService;
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<?> getMyPage() {
+    @PutMapping
+    public ResponseEntity<?> updateStatus(@RequestParam boolean status){
         Optional<Long> userId = userService.getUserId();
-        MyPageResponseDto myPage = myPageService.getMyPage(userId.get());
-        return ResponseEntity.ok(myPage);
+        timerService.updateTimeState(userId.get(),status);
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
 
-    @PatchMapping
-    public ResponseEntity<?> updateMyPage(@RequestBody MyPageRequestDto myPageRequestDto){
+    @PostMapping
+    public ResponseEntity<?> saveTimer(@RequestBody TimerRequestDto dto){
         Optional<Long> userId = userService.getUserId();
-        myPageService.updateMyPage(userId.get(), myPageRequestDto);
+        timerService.saveTime(userId.get(),dto.getTime());
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
 

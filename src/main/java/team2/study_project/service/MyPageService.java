@@ -29,7 +29,7 @@ public class MyPageService {
 
         MyPageResponseDto dto = MyPageResponseDto.builder()
                 .email(user.getEmail())
-                .nickname(user.getUsername())
+                .username(user.getUsername())
                 .follower(followerCount)
                 .following(followingCount)
                 .build();
@@ -48,7 +48,7 @@ public class MyPageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new StudyException(ErrorEnum.USER_NOT_FOUND));
 
-        user.update(myPageRequestDto.getNickname());
+        user.update(myPageRequestDto.getUsername());
     }
 
 }

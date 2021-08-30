@@ -5,12 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import team2.study_project.domain.Follow;
+import team2.study_project.domain.Study;
+import team2.study_project.domain.Timer;
 import team2.study_project.domain.User;
+import team2.study_project.dto.follow.FollowResponseDto;
 import team2.study_project.exception.ErrorEnum;
 import team2.study_project.exception.StudyException;
 import team2.study_project.repository.FollowRepository;
 import team2.study_project.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +79,7 @@ class FollowServiceTest {
         //when
         followService.follow(user1.getId(),user2.getId());
         followService.follow(user1.getId(),user3.getId());
-        List<User> followList = followService.getFollowList(user1.getId());
+        List<FollowResponseDto> followList = followService.getFollowList(user1.getId());
 
         //then
         assertThat(followList.size()).isEqualTo(2);
@@ -106,8 +110,8 @@ class FollowServiceTest {
     @Test
     public void 팔로우_취소_예외() throws Exception{
         //given
-        User user1 = createMember("test1@test.com","안녕","1234");
-        User user2 = createMember("test2@test.com","녕녕","12334");
+        User user1 = createMember("test1@test.com","hello","1234");
+        User user2 = createMember("test2@test.com","helloo","12334");
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -136,6 +140,7 @@ class FollowServiceTest {
         assertThat(followRepository.findById(followId)).isEmpty();
     }
 
+
     private User createMember(String email, String nickname, String password){
         User user = User.builder()
                 .email(email)
@@ -144,4 +149,44 @@ class FollowServiceTest {
                 .build();
         return user;
     }
+
+    @Test
+    public void calculateRate(){
+
+        Study study1 = Study.builder()
+                .content("gg")
+                .status(true)
+                .build();
+
+        Study study2 = Study.builder()
+                .content("gg")
+                .status(false)
+                .build();
+        Study study3 = Study.builder()
+                .content("gg")
+                .status(false)
+                .build();
+        Study study4 = Study.builder()
+                .content("gg")
+                .status(false)
+                .build();
+        List<Study> studyList = new ArrayList<>();
+        studyList.add(study1);
+        studyList.add(study2);
+        studyList.add(study3);
+        studyList.add(study4);
+
+
+        int done = 0;
+
+        for (Study study : studyList) {
+            if(study.isStatus()){
+                done+=1;
+            }
+        }
+
+        double rate = ((double) done/studyList.size())*100;
+        System.out.println(rate);
+    }
+
 }
