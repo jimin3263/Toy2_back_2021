@@ -1,6 +1,7 @@
 package team2.study_project.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,9 +21,11 @@ public class Timer extends BasicClass{
     private User user;
 
     @Column
-    private LocalDateTime startTime;
+    private String time;
 
-    @Column
-    private LocalDateTime endTime;
-
+    @Builder
+    public Timer(User user, String time) {
+        this.user = user;
+        this.time = time;
+    }
 }
