@@ -1,19 +1,21 @@
 package team2.study_project.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor //(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
+
 public class User extends BasicClass implements UserDetails  {
 
     @Id @GeneratedValue
@@ -29,6 +31,17 @@ public class User extends BasicClass implements UserDetails  {
     @Column
     private String username;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
     @OneToMany(mappedBy = "user")
     private List<Timer> timer = new ArrayList<>();
 
@@ -43,11 +56,6 @@ public class User extends BasicClass implements UserDetails  {
         this.email= email;
         this.password=password;
         this.username=username;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
     }
 
     @Override
