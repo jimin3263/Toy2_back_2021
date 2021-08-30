@@ -42,6 +42,9 @@ public class User extends BasicClass implements UserDetails  {
                 .collect(Collectors.toList());
     }
 
+    @Column
+    private Boolean studyStatus;
+
     @OneToMany(mappedBy = "user")
     private List<Timer> timer = new ArrayList<>();
 
@@ -112,6 +115,10 @@ public class User extends BasicClass implements UserDetails  {
 
     public void update(String username){
         this.username= username;
+    }
+
+    public void updateTimeStatue(boolean status){
+        this.studyStatus = status;
     }
 
 }

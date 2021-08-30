@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team2.study_project.domain.User;
+import team2.study_project.jwt.SecurityUtil;
 import team2.study_project.repository.UserRepository;
 
 import java.util.Optional;
 
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
@@ -17,6 +18,7 @@ public class UserService {
     /**
      * 이메일 검증
      */
+    @Transactional
     public String validateEmail(User user) {
 
         String email = user.getEmail();
@@ -29,4 +31,7 @@ public class UserService {
         return "success";
     }
 
+    public Optional<Long> getUserId() {
+        return SecurityUtil.getCurrentUserId();
+    }
 }
