@@ -1,4 +1,4 @@
-package team2.study_project.dto;
+package team2.study_project.dto.user;
 
 public class UserDto {
 
