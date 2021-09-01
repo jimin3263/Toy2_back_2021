@@ -9,6 +9,7 @@ import team2.study_project.dto.follow.FollowListResponseDto;
 import team2.study_project.dto.follow.FollowResponseDto;
 import team2.study_project.dto.user.FindUserDto;
 import team2.study_project.dto.user.FindUserListDto;
+import team2.study_project.jwt.SecurityUtil;
 import team2.study_project.service.FollowService;
 import team2.study_project.service.UserService;
 
@@ -21,11 +22,10 @@ import java.util.Optional;
 public class FollowController {
 
     private final FollowService followService;
-    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<?> getFollowList() {
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
 
         List<FollowResponseDto> followList = followService.getFollowList(userId.get());
 
@@ -38,14 +38,14 @@ public class FollowController {
 
     @PostMapping("/{memberId}")
     public ResponseEntity<?> saveStudy(@PathVariable Long memberId) {
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
         followService.follow(userId.get(), memberId);
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
 
     @DeleteMapping("/{memberId}")
     public ResponseEntity<?> deleteFollow(@PathVariable Long memberId){
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
         followService.deleteFollow(userId.get(), memberId);
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
     }
