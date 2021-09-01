@@ -8,8 +8,8 @@ import team2.study_project.dto.ResponseMessage;
 import team2.study_project.dto.study.StudyListResponseDto;
 import team2.study_project.dto.study.StudyRequestDto;
 import team2.study_project.dto.study.StudyResponseDto;
+import team2.study_project.jwt.SecurityUtil;
 import team2.study_project.service.StudyService;
-import team2.study_project.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +20,10 @@ import java.util.Optional;
 public class StudyController {
 
     private final StudyService studyService;
-    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<?> getStudyList() {
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
         List<StudyResponseDto> studyList = studyService.getStudyList(userId.get());
 
         StudyListResponseDto dto = StudyListResponseDto.builder()
@@ -36,7 +35,7 @@ public class StudyController {
 
     @PostMapping
     public ResponseEntity<?> saveStudy(@RequestBody StudyRequestDto requestDto) {
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
         studyService.saveStudy(userId.get(), requestDto);
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
@@ -57,7 +56,7 @@ public class StudyController {
 
     @DeleteMapping("/{studyId}")
     public ResponseEntity<?> deleteStudy(@PathVariable Long studyId){
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
         studyService.delete(studyId,userId.get());
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
     }

@@ -55,10 +55,11 @@ public class User extends BasicClass implements UserDetails  {
     private List<Follow> followList = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String username){
+    public User(String email, String password, String username, boolean studyStatus){
         this.email= email;
         this.password=password;
         this.username=username;
+        this.studyStatus=studyStatus;
     }
 
     @Override

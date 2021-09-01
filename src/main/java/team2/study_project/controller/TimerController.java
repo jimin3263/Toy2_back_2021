@@ -6,8 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team2.study_project.dto.ResponseMessage;
 import team2.study_project.dto.timer.TimerRequestDto;
+import team2.study_project.dto.timer.TimerResponseDto;
+import team2.study_project.jwt.SecurityUtil;
 import team2.study_project.service.TimerService;
-import team2.study_project.service.UserService;
 
 import java.util.Optional;
 
@@ -17,20 +18,25 @@ import java.util.Optional;
 public class TimerController {
 
     private final TimerService timerService;
-    private final UserService userService;
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<?> updateStatus(@RequestParam boolean status){
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
         timerService.updateTimeState(userId.get(),status);
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
 
     @PostMapping
     public ResponseEntity<?> saveTimer(@RequestBody TimerRequestDto dto){
-        Optional<Long> userId = userService.getUserId();
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
         timerService.saveTime(userId.get(),dto.getTime());
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
 
+    @GetMapping
+    public ResponseEntity<?> getTimer(){
+        Optional<Long> userId = SecurityUtil.getCurrentUserId();
+        TimerResponseDto time = timerService.getTime(userId.get());
+        return ResponseEntity.ok(time);
+    }
 }

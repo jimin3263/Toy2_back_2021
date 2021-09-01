@@ -1,4 +1,4 @@
-package team2.study_project;
+package team2.study_project.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,6 @@ public class JpaConfig {
     @Bean
     public AuditorAware<String> auditorAware(){
         return () -> Optional.of(UUID.randomUUID().toString());
-    }
-
-    @Bean
-    public UserService userService() {
-        return new UserService(userRepository);
     }
 
 

@@ -3,7 +3,6 @@ package team2.study_project.jwt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import team2.study_project.domain.User;
 
 import java.util.Optional;
