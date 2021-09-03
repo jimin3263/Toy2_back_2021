@@ -45,12 +45,13 @@ public class StudyService {
 
     //조회
     public List<StudyResponseDto> getStudyList(Long userId){
-        userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(()->new StudyException(ErrorEnum.USER_NOT_FOUND));
 
         List<StudyResponseDto> studyResponse =  new ArrayList<>();
 
-        List<Study> studyList = studyRepository.findByUserId(userId);
+        List<Study> studyList = user.getStudyList();
+
         for (Study study : studyList) {
             StudyResponseDto dto = StudyResponseDto.builder()
                     .status(study.isStatus())
@@ -84,11 +85,19 @@ public class StudyService {
 
     //삭제
     @Transactional
-    public void delete(Long studyId){
+    public void delete(Long studyId, Long userId){
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(()-> new StudyException(ErrorEnum.STUDY_NOT_FOUND));
 
+        checkValidUser(userId, study);
+
         studyRepository.delete(study);
+    }
+
+    private void checkValidUser(Long userId, Study study) {
+        if (!study.getUser().getId().equals(userId)){
+            throw new StudyException(ErrorEnum.REJECTED_STUDY);
+        }
     }
 
 }

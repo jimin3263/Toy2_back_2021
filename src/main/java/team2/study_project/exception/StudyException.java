@@ -10,7 +10,7 @@ public class StudyException extends RuntimeException {
 
     public StudyException(ErrorEnum errorEnum) {
         super(errorEnum.toString());
-        this.status = errorEnum.getErrorResponse().getStatus();
+        this.status = errorEnum.getErrorResponse().getCode();
         this.errorEnum = errorEnum;
     }
 }

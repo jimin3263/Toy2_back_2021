@@ -42,6 +42,9 @@ public class User extends BasicClass implements UserDetails  {
                 .collect(Collectors.toList());
     }
 
+    @Column
+    private Boolean studyStatus;
+
     @OneToMany(mappedBy = "user")
     private List<Timer> timer = new ArrayList<>();
 
@@ -52,10 +55,11 @@ public class User extends BasicClass implements UserDetails  {
     private List<Follow> followList = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String username){
+    public User(String email, String password, String username, boolean studyStatus){
         this.email= email;
         this.password=password;
         this.username=username;
+        this.studyStatus=studyStatus;
     }
 
     @Override
@@ -112,6 +116,10 @@ public class User extends BasicClass implements UserDetails  {
 
     public void update(String username){
         this.username= username;
+    }
+
+    public void updateTimeStatue(boolean status){
+        this.studyStatus = status;
     }
 
 }
